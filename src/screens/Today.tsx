@@ -3,7 +3,7 @@ import { Icon } from '../icons'
 import { canListen, judge, listen, speak, type Verdict } from '../speech'
 import { buildSession, findItem, grade } from '../srs'
 import { daysUntil, getData, today, useData } from '../store'
-import { Header } from '../ui'
+import { Header, PhraseRow } from '../ui'
 
 // Dagens øvelse huskes, mens appen er åben, så man kan skifte fane uden at miste stedet.
 let session: { date: string; queue: string[]; total: number; done: number } | null = null
@@ -49,6 +49,11 @@ export function Today() {
       right={
         <>
           {cd && <span className="muted small">{cd}</span>}
+          {Object.keys(d.log).length > 0 && (
+            <a className="round plain" href="#/laert" aria-label="Det har jeg lært">
+              <Icon n="days" />
+            </a>
+          )}
           <a className="round plain" href="#/indstillinger" aria-label="Indstillinger">
             <Icon n="gear" />
           </a>
@@ -59,30 +64,43 @@ export function Today() {
 
   if (!item) {
     const practiced = d.days[today()] ?? 0
+    const learned = (d.log[today()] ?? []).map((x) => findItem(d, x)).filter((x) => x !== undefined)
     return (
       <main className="page screen">
         {header}
         <article className="card done">
           <div className="ring">
-            <Icon n="check" s={36} />
+            <Icon n="check" s={32} />
           </div>
-          <h2>Godt klaret!</h2>
-          <p className="muted">
-            {practiced > 0 ? `Du har øvet ${practiced} ${practiced === 1 ? 'sætning' : 'sætninger'} i dag.` : 'Ikke mere at øve lige nu.'} Kom
-            tilbage i morgen.
-          </p>
-          <div className="actions" style={{ justifyContent: 'center' }}>
-            <button
-              className="btn tonal"
-              onClick={() => {
-                newSession()
-                force((x) => x + 1)
-              }}
-            >
-              <Icon n="plus" /> Øv lidt mere
-            </button>
+          <div>
+            <h2>Godt klaret!</h2>
+            <span className="muted">
+              {practiced > 0 ? `${practiced} ${practiced === 1 ? 'sætning' : 'sætninger'} i dag` : 'Ikke mere at øve lige nu'}
+            </span>
           </div>
         </article>
+        {learned.length > 0 && (
+          <>
+            <div className="sec">Det lærte du i dag</div>
+            {learned.map((ph) => (
+              <PhraseRow key={ph.id} ph={ph} />
+            ))}
+          </>
+        )}
+        <div className="actions" style={{ justifyContent: 'center' }}>
+          <a className="btn tonal" href="#/laert">
+            <Icon n="days" /> Tidligere dage
+          </a>
+          <button
+            className="btn text"
+            onClick={() => {
+              newSession()
+              force((x) => x + 1)
+            }}
+          >
+            <Icon n="plus" /> Øv mere
+          </button>
+        </div>
       </main>
     )
   }

@@ -42,6 +42,7 @@ export type Data = {
   cards: Record<string, CardState>
   spentKr: number
   days: Record<string, number> // dato -> antal kort øvet
+  log: Record<string, string[]> // dato -> sætninger klaret den dag (i rækkefølge)
 }
 
 const KEY = 'fala-v1'
@@ -53,6 +54,7 @@ const empty: Data = {
   cards: {},
   spentKr: 0,
   days: {},
+  log: {},
 }
 
 function load(): Data {

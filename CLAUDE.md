@@ -31,7 +31,8 @@ Udkast: `docs/forslag-fala.png` og `docs/forslag-fala-mork.png` (kilde: `docs/fo
 - `src/speech.ts`: oplæsning (pt-PT-stemme) og udtaletjek (løs sammenligning; "Godt sagt" ≥ 80 %, "Næsten" ≥ 50 %).
 - `src/claude.ts` (hentes først ved brug via `src/ai.ts`): "Sig det" og "Om mig". Officiel SDK i browseren, struktureret JSON-svar, `effort: low`, forbrug i kroner (Sonnet 5.5: 2 $/10 $ pr. mio. tokens, kurs 6,9).
 - `src/store.ts`: alt gemmes i localStorage (`fala-v1`): indstillinger, Om mig, Min parlør, FSRS-kort, forbrug.
-- Skærme i `src/screens/`: I dag, Parlør, Om mig, Sig det, Indstillinger (tandhjul øverst i I dag: feriedato, sted, antal om dagen, nøgle, tema).
+- Skærme i `src/screens/`: I dag, Parlør, Om mig, Sig det, Indstillinger (knap øverst i I dag: feriedato, sted, antal om dagen, nøgle, tema) og Det har jeg lært (`#/laert`, kalender-knap øverst i I dag).
+- **Det har jeg lært:** hver gang man trykker "Kunne den", gemmes sætningen under dagens dato i `log` (én gang pr. dag). Når dagens øvelse er klaret, vises listen "Det lærte du i dag". Skærmen `Learned.tsx` viser dag for dag med dag-knapper (Alle, I dag, I går, …) og søgning på dansk/portugisisk/udtale. Forslag: `docs/forslag-laert.png`.
 
 ## Byg og udgivelse
 

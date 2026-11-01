@@ -5,12 +5,13 @@ import { AboutMe } from './screens/AboutMe'
 import { Parlor } from './screens/Parlor'
 import { SayIt } from './screens/SayIt'
 import { Settings } from './screens/Settings'
+import { Learned } from './screens/Learned'
 import { Today } from './screens/Today'
 import { useData } from './store'
 import { useHash } from './ui'
 
 const TABS = [
-  { href: '#/', icon: 'sun', label: 'I dag', match: (h: string) => h === '#/' || h.startsWith('#/indstillinger') },
+  { href: '#/', icon: 'sun', label: 'I dag', match: (h: string) => h === '#/' || h.startsWith('#/indstillinger') || h.startsWith('#/laert') },
   { href: '#/parlor', icon: 'book', label: 'Parlør', match: (h: string) => h.startsWith('#/parlor') || h.startsWith('#/om-mig') },
   { href: '#/sig', icon: 'chat', label: 'Sig det', match: (h: string) => h.startsWith('#/sig') },
 ]
@@ -46,6 +47,7 @@ export default function App() {
   else if (h.startsWith('#/om-mig')) screen = <AboutMe />
   else if (h.startsWith('#/sig')) screen = <SayIt />
   else if (h.startsWith('#/indstillinger')) screen = <Settings />
+  else if (h.startsWith('#/laert')) screen = <Learned />
   else screen = <Today />
 
   return (

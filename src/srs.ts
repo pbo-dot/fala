@@ -80,6 +80,7 @@ export function grade(id: string, ok: boolean) {
       ...d,
       cards: { ...d.cards, [id]: fromCard(next) },
       days: ok ? { ...d.days, [t]: (d.days[t] ?? 0) + 1 } : d.days,
+      log: ok && !(d.log[t] ?? []).includes(id) ? { ...d.log, [t]: [...(d.log[t] ?? []), id] } : d.log,
     }
   })
 }

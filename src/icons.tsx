@@ -14,6 +14,8 @@ const P: Record<string, string> = {
   close: '<path d="M6 6l12 12M18 6L6 18"/>',
   send: '<path d="M5 12h14M13 6l6 6-6 6"/>',
   gear: '<path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/>',
+  days: '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/>',
+  search: '<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
   stop: '<rect x="6" y="6" width="12" height="12" rx="2"/>',
   edit: '<path d="M4 20h4L19 9l-4-4L4 16z"/>',

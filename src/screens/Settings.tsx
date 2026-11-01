@@ -92,7 +92,7 @@ export function Settings() {
         <button
           className="btn text danger"
           onClick={() => {
-            if (confirm('Start øvningen forfra? Din parlør og Om mig bliver ikke slettet.')) update((x) => ({ ...x, cards: {}, days: {} }))
+            if (confirm('Start øvningen forfra? Din parlør og Om mig bliver ikke slettet.')) update((x) => ({ ...x, cards: {}, days: {}, log: {} }))
           }}
         >
           Start øvningen forfra

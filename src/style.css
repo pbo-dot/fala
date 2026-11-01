@@ -194,8 +194,14 @@ button { -webkit-tap-highlight-color: transparent; }
 .form input:focus { outline: none; border-color: var(--pri); }
 .form .hintline { color: var(--mut); font-size: 14px; margin: 6px 4px 0; }
 
-.done { text-align: center; padding: 28px 20px; }
-.done .ring { margin: 0 auto 12px; }
+.done { display: flex; align-items: center; gap: 16px; padding: 18px 20px; }
+.done h2 { margin: 0; }
+.done .ring { width: 60px; height: 60px; border-radius: 30px; }
+.chips.days { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; margin: 8px -16px 4px; padding: 0 16px 4px; scrollbar-width: none; }
+.chips.days::-webkit-scrollbar { display: none; }
+.chips.days .chip { white-space: nowrap; flex: none; }
+.sec.row2 { display: flex; justify-content: space-between; gap: 12px; }
+.sec.row2 span:first-letter { text-transform: uppercase; }
 
 .big-overlay { position: fixed; inset: 0; z-index: 50; background: var(--bg); display: flex; flex-direction: column; justify-content: center; padding: 32px 24px calc(32px + env(safe-area-inset-bottom)); text-align: center; animation: fade .2s ease; }
 .big-overlay .huge { font-size: clamp(38px, 11vw, 72px); font-weight: 800; line-height: 1.15; overflow-wrap: anywhere; }
