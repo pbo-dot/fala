@@ -1,0 +1,52 @@
+<!doctype html><html lang="da"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../src/style.css">
+<style>
+body{background:#d9dce8;margin:0;padding:28px;font-family:Roboto,system-ui,sans-serif}
+[data-theme=dark] body{background:#05060a}
+.wrap{display:flex;gap:28px;align-items:flex-start}
+.col{display:flex;flex-direction:column;gap:12px;align-items:center}
+.cap{font:700 18px/1.3 Roboto,sans-serif;color:#141a33;text-align:center;width:390px}
+.cap small{display:block;font-weight:400;font-size:14px;color:#3b4166;margin-top:4px}
+[data-theme=dark] .cap{color:#eef0ff}[data-theme=dark] .cap small{color:#aab0d6}
+.phone{width:390px;height:844px;border-radius:44px;overflow:hidden;position:relative;background:var(--bg);color:var(--on);box-shadow:0 10px 40px #0003;border:8px solid #111}
+.phone .page{padding-top:18px}
+.phone .tabbar{position:absolute}
+.done{padding:18px 20px}.done h2{margin:6px 0 2px}
+.ring{width:56px;height:56px;border-radius:28px}
+.mini{display:flex;align-items:center;gap:14px;text-align:left}
+.prow{padding:8px 8px 8px 16px;margin:6px 0}
+.chips{justify-content:flex-start;flex-wrap:nowrap;overflow:hidden;margin:4px 0 6px}
+.chip{white-space:nowrap}
+.sec{display:flex;justify-content:space-between}
+</style></head><body>
+<div class="wrap">
+<div class="col"><div class="cap">1. Når dagens sætninger er klaret<small>Oversigt over dem, du lige har lært</small></div>
+<div class="phone"><main class="page">
+ <header class="top"><h1 class="grow">Fala</h1><span class="muted small">12 dage til Lissabon</span></header>
+ <article class="card done"><div class="mini"><div class="ring"><i data-i="check"></i></div><div><h2>Godt klaret!</h2><span class="muted">8 sætninger i dag</span></div></div></article>
+ <div class="sec"><span>Det lærte du i dag</span></div>
+ <div class="prow"><span class="grow"><b>Uma bica, por favor.</b><span class="lydsm">U-ma BI-ka, pur fa-VOR</span><span>En espresso, tak.</span></span><span class="round"><i data-i="speaker"></i></span></div>
+ <div class="prow"><span class="grow"><b>A conta, por favor.</b><span class="lydsm">a KÕ-ta, pur fa-VOR</span><span>Regningen, tak.</span></span><span class="round"><i data-i="speaker"></i></span></div>
+ <div class="prow"><span class="grow"><b>Quanto é?</b><span class="lydsm">KWAN-tu Æ</span><span>Hvad bliver det?</span></span><span class="round"><i data-i="speaker"></i></span></div>
+ <div class="prow"><span class="grow"><b>Aqui tem.</b><span class="lydsm">a-KI tãi</span><span>Værsgo.</span></span><span class="round"><i data-i="speaker"></i></span></div>
+ <div class="center" style="margin-top:6px"><span class="btn tonal"><i data-i="days"></i> Tidligere dage</span> <span class="btn text"><i data-i="plus"></i> Øv mere</span></div>
+</main><nav class="tabbar"><a class="on"><span class="pill"><i data-i="sun"></i></span>I dag</a><a><span class="pill"><i data-i="book"></i></span>Parlør</a><a><span class="pill"><i data-i="chat"></i></span>Sig det</a></nav></div></div>
+
+<div class="col"><div class="cap">2. Det har jeg lært<small>Dag for dag – vælg en dag, eller søg</small></div>
+<div class="phone"><main class="page">
+ <header class="top"><span class="round"><i data-i="back"></i></span><h1 class="h-small grow">Det har jeg lært</h1></header>
+ <div class="search"><i data-i="search"></i><span class="grow">Søg på dansk eller portugisisk</span></div>
+ <div class="chips"><span class="chip">Alle</span><span class="chip">I dag</span><span class="chip">I går</span><span class="chip on">Fre 30. okt</span><span class="chip">Tor 29. okt</span></div>
+ <div class="sec"><span>Fredag 30. oktober</span><span>8 sætninger</span></div>
+ <div class="prow"><span class="grow"><b>Bom dia.</b><span class="lydsm">bõ DI-a</span><span>Godmorgen.</span></span><span class="round"><i data-i="speaker"></i></span></div>
+ <div class="prow"><span class="grow"><b>Obrigado.</b><span class="lydsm">o-bri-GA-du</span><span>Tak. (siger en mand)</span></span><span class="round"><i data-i="speaker"></i></span></div>
+ <div class="prow"><span class="grow"><b>Desculpe.</b><span class="lydsm">dësj-KUL-pë</span><span>Undskyld.</span></span><span class="round"><i data-i="speaker"></i></span></div>
+ <div class="prow"><span class="grow"><b>Não percebo.</b><span class="lydsm">nãu për-SE-bu</span><span>Jeg forstår ikke.</span></span><span class="round"><i data-i="speaker"></i></span></div>
+ <div class="prow"><span class="grow"><b>Fala inglês?</b><span class="lydsm">FA-la ĩ-GLESJ</span><span>Taler du engelsk?</span></span><span class="round"><i data-i="speaker"></i></span></div>
+</main><nav class="tabbar"><a class="on"><span class="pill"><i data-i="sun"></i></span>I dag</a><a><span class="pill"><i data-i="book"></i></span>Parlør</a><a><span class="pill"><i data-i="chat"></i></span>Sig det</a></nav></div></div>
+</div>
+<script>
+const P={speaker:'<path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/>',check:'<path d="M5 12l5 5L20 7"/>',sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/>',book:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5"/>',chat:'<path d="M4 5h16v11H9l-5 4z"/>',back:'<path d="M15 5l-7 7 7 7"/>',days:'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/>',search:'<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/>',plus:'<path d="M12 5v14M5 12h14"/>'};
+document.querySelectorAll('i[data-i]').forEach(e=>{e.outerHTML='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+P[e.dataset.i]+'</svg>'});
+if(location.hash==='#dark')document.documentElement.dataset.theme='dark';
+</script></body></html>
