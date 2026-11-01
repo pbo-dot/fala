@@ -7,4 +7,6 @@ Lidt portugisisk fra Portugal til ferien, fem minutter om dagen. Til dig, der ik
 - Om mig: præsentér dig selv med dine egne oplysninger
 - Sig det for mig: skriv eller sig det på dansk, og få det på portugisisk
 
-Udkast: `docs/forslag-fala.png` (endnu ikke bygget).
+Udkast: `docs/forslag-fala.png`.
+
+Byg: `npm install`, `npm run build`. Udgives til GitHub Pages fra `main`.

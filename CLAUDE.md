@@ -6,7 +6,7 @@ Projektkontekst og regler for Claude Code.
 
 Fala er en lille app (PWA) til eget brug, der lærer ejeren lidt **portugisisk fra Portugal** (ikke brasiliansk) til ferien. Ejeren er "absolut ikke god til at lære sprog": ingen grammatik, ingen lange gloselister, kun det man får brug for. Fem minutter om dagen, og en parlør, der virker på ferien.
 
-Udkast (godkendt som retning, endnu ikke bygget): `docs/forslag-fala.png` og `docs/forslag-fala-mork.png` (kilde: `docs/forslag-fala.html`, bruger Kiks stil i `docs/kik-stil.css`).
+Udkast: `docs/forslag-fala.png` og `docs/forslag-fala-mork.png` (kilde: `docs/forslag-fala.html`, bruger Kiks stil i `docs/kik-stil.css`). Første udgave er bygget efter udkastet (november 2026).
 
 ## Funktioner (fra udkastet)
 
@@ -23,6 +23,15 @@ Udkast (godkendt som retning, endnu ikke bygget): `docs/forslag-fala.png` og `do
 - Oplæsning: `speechSynthesis` med en `pt-PT`-stemme (vælg en stemme, hvis lang starter med `pt-PT`; ikke `pt-BR`). "Langsomt" = lavere `rate`.
 - Udtaletjek: `SpeechRecognition` med `lang = 'pt-PT'`, sammenlign det hørte med sætningen løst (små bogstaver, uden tegn). Kræver net i Chrome. Vær venlig: "Næsten! Du sagde …".
 - Claude (ejerens egen nøgle, som i Kik) kun til "Sig det for mig" og "Om mig". Standardmodel `claude-sonnet-5-5`, `fallbacks: "default"` (beta `server-side-fallback-2026-07-01`), struktureret svar (portugisisk, udtale, dansk, note). Forbrug som skøn i kroner.
+
+## Sådan er koden delt op
+
+- `src/data/phrases.ts`: alt indbygget indhold (Høflighed, Café, Restaurant, Butik, Find vej, Hjælp!, Hverdagsord), med udtale og noter om Portugal/Brasilien. Udtaleregler står øverst i filen.
+- `src/srs.ts`: dagens øvelse med FSRS. Først kort, der skal gentages, så nye i rækkefølgen Høflighed → Om mig → Min parlør → Café → … → Hverdagsord. "Igen" sætter kortet tilbage i køen.
+- `src/speech.ts`: oplæsning (pt-PT-stemme) og udtaletjek (løs sammenligning; "Godt sagt" ≥ 80 %, "Næsten" ≥ 50 %).
+- `src/claude.ts` (hentes først ved brug via `src/ai.ts`): "Sig det" og "Om mig". Officiel SDK i browseren, struktureret JSON-svar, `effort: low`, forbrug i kroner (Sonnet 5.5: 2 $/10 $ pr. mio. tokens, kurs 6,9).
+- `src/store.ts`: alt gemmes i localStorage (`fala-v1`): indstillinger, Om mig, Min parlør, FSRS-kort, forbrug.
+- Skærme i `src/screens/`: I dag, Parlør, Om mig, Sig det, Indstillinger (tandhjul øverst i I dag: feriedato, sted, antal om dagen, nøgle, tema).
 
 ## Byg og udgivelse
 
