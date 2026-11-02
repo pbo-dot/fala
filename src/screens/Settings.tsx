@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { kr } from '../ai'
-import { hasPtVoice, speak } from '../speech'
+import { onVoicesChanged, speak, voiceInfo } from '../speech'
 import { update, useData, type Settings as S } from '../store'
+import { Icon } from '../icons'
 import { Header } from '../ui'
 
 export function Settings() {
@@ -9,7 +10,9 @@ export function Settings() {
   const s = d.settings
   const [showKey, setShowKey] = useState(false)
   const set = <K extends keyof S>(k: K, v: S[K]) => update((x) => ({ ...x, settings: { ...x.settings, [k]: v } }))
-  const voice = hasPtVoice()
+  const [, redraw] = useState(0)
+  useEffect(() => onVoicesChanged(() => redraw((x) => x + 1)), [])
+  const { voice, onlyBrazil } = voiceInfo()
 
   return (
     <main className="page screen">
@@ -38,13 +41,27 @@ export function Settings() {
 
       <section className="card form">
         <b>Oplæsning</b>
-        <p className="hintline">
-          {voice
-            ? 'Telefonen har en portugisisk stemme fra Portugal.'
-            : 'Fandt ingen stemme fra Portugal. På Android: Indstillinger → Tekst til tale → Google → installer "Portugisisk (Portugal)".'}
-        </p>
+        {voice ? (
+          <div className="voice">
+            <span className="ring small">
+              <Icon n="check" s={20} />
+            </span>
+            <span className="grow">
+              <b>{voice.name}</b>
+              <span>
+                {voice.lang} · Portugal{voice.local ? '' : ' · kræver net'}
+              </span>
+            </span>
+          </div>
+        ) : (
+          <p className="hintline">
+            {onlyBrazil ? 'Telefonen har kun en brasiliansk stemme. ' : 'Fandt ingen stemme fra Portugal. '}
+            På Android: Indstillinger → Tekst til tale → Google → installer "Portugisisk (Portugal)".
+          </p>
+        )}
+        <p className="hintline">Lyt efter enderne: Portugal siger "TAR-dë", Brasilien "TAR-dji".</p>
         <div className="actions">
-          <button className="btn tonal" onClick={() => speak('Olá! Bom dia. Uma bica, por favor.')}>
+          <button className="btn tonal" onClick={() => speak('Boa tarde. Pode repetir, por favor?')}>
             Prøv stemmen
           </button>
         </div>

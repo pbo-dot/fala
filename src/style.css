@@ -207,3 +207,8 @@ button { -webkit-tap-highlight-color: transparent; }
 .big-overlay .huge { font-size: clamp(38px, 11vw, 72px); font-weight: 800; line-height: 1.15; overflow-wrap: anywhere; }
 .big-overlay .da { margin-top: 18px; font-size: 20px; }
 .big-overlay .close { position: absolute; top: max(16px, env(safe-area-inset-top)); right: 16px; }
+
+.voice { display: flex; align-items: center; gap: 12px; margin: 10px 0 0; padding: 10px 12px; border-radius: 18px; background: var(--ton); }
+.voice b { display: block; overflow-wrap: anywhere; }
+.voice .grow > span { display: block; color: var(--mut); font-size: 14px; }
+.ring.small { width: 36px; height: 36px; border-radius: 18px; background: var(--ok); color: var(--ok-on); }

@@ -17,9 +17,23 @@ if ('speechSynthesis' in window) {
   speechSynthesis.addEventListener?.('voiceschanged', pickVoice)
 }
 
-export function hasPtVoice(): boolean {
+export type VoiceInfo = { name: string; lang: string; local: boolean } | null
+
+/** Den stemme, Fala bruger, og om telefonen kun har brasilianske stemmer. */
+export function voiceInfo(): { voice: VoiceInfo; onlyBrazil: boolean } {
   pickVoice()
-  return ptVoice !== null
+  const all = 'speechSynthesis' in window ? speechSynthesis.getVoices() : []
+  const br = all.some((v) => v.lang.replace('_', '-').toLowerCase() === 'pt-br')
+  return {
+    voice: ptVoice ? { name: ptVoice.name, lang: ptVoice.lang.replace('_', '-'), local: ptVoice.localService } : null,
+    onlyBrazil: !ptVoice && br,
+  }
+}
+
+export function onVoicesChanged(cb: () => void): () => void {
+  if (!('speechSynthesis' in window)) return () => {}
+  speechSynthesis.addEventListener?.('voiceschanged', cb)
+  return () => speechSynthesis.removeEventListener?.('voiceschanged', cb)
 }
 
 /** Fjerner "…" og pladsholdere, så de ikke læses op. */

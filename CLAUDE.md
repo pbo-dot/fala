@@ -28,7 +28,7 @@ Udkast: `docs/forslag-fala.png` og `docs/forslag-fala-mork.png` (kilde: `docs/fo
 
 - `src/data/phrases.ts`: alt indbygget indhold (Høflighed, Café, Restaurant, Butik, Find vej, Hjælp!, Hverdagsord), med udtale og noter om Portugal/Brasilien. Udtaleregler står øverst i filen.
 - `src/srs.ts`: dagens øvelse med FSRS. Først kort, der skal gentages, så nye i rækkefølgen Høflighed → Om mig → Min parlør → Café → … → Hverdagsord. "Igen" sætter kortet tilbage i køen.
-- `src/speech.ts`: oplæsning (pt-PT-stemme) og udtaletjek (løs sammenligning; "Godt sagt" ≥ 80 %, "Næsten" ≥ 50 %).
+- `src/speech.ts`: oplæsning (pt-PT-stemme; Indstillinger viser stemmens navn og sprog, og advarer, hvis telefonen kun har en brasiliansk) og udtaletjek (løs sammenligning; "Godt sagt" ≥ 80 %, "Næsten" ≥ 50 %).
 - `src/claude.ts` (hentes først ved brug via `src/ai.ts`): "Sig det" og "Om mig". Officiel SDK i browseren, struktureret JSON-svar, `effort: low`, forbrug i kroner (Sonnet 5.5: 2 $/10 $ pr. mio. tokens, kurs 6,9).
 - `src/store.ts`: alt gemmes i localStorage (`fala-v1`): indstillinger, Om mig, Min parlør, FSRS-kort, forbrug.
 - Skærme i `src/screens/`: I dag, Parlør, Om mig, Sig det, Indstillinger (knap øverst i I dag: feriedato, sted, antal om dagen, nøgle, tema) og Det har jeg lært (`#/laert`, kalender-knap øverst i I dag).
