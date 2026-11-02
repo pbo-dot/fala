@@ -1,0 +1,60 @@
+<!doctype html><html lang="da"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../src/style.css">
+<style>
+body{background:#d9dce8;margin:0;padding:28px;font-family:Roboto,system-ui,sans-serif}
+[data-theme=dark] body{background:#05060a}
+.wrap{display:flex;gap:28px;align-items:flex-start}
+.col{display:flex;flex-direction:column;gap:12px;align-items:center}
+.cap{font:700 18px/1.3 Roboto,sans-serif;color:#141a33;text-align:center;width:390px}
+.cap small{display:block;font-weight:400;font-size:14px;color:#3b4166;margin-top:4px}
+[data-theme=dark] .cap{color:#eef0ff}[data-theme=dark] .cap small{color:#aab0d6}
+.phone{width:390px;height:844px;border-radius:44px;overflow:hidden;position:relative;background:var(--bg);color:var(--on);box-shadow:0 10px 40px #0003;border:8px solid #111}
+.phone .page{padding-top:18px}
+.phone .tabbar{position:absolute}
+.done{padding:18px 20px}.done h2{margin:6px 0 2px}
+.ring{width:56px;height:56px;border-radius:28px}
+.mini{display:flex;align-items:center;gap:14px;text-align:left}
+.prow{padding:8px 8px 8px 16px;margin:6px 0}
+.chips{justify-content:flex-start;flex-wrap:nowrap;overflow:hidden;margin:4px 0 6px}
+.chip{white-space:nowrap}
+.sec{display:flex;justify-content:space-between}
+</style></head><body><style>
+.big-pt{font-size:30px;font-weight:800;line-height:1.2;margin:4px 0}
+.lyd{font-size:19px;color:var(--pri);font-weight:700;margin:2px 0 6px}
+.da{color:var(--mut);font-size:17px}
+.prog{display:flex;gap:6px;margin:4px 6px 12px}.prog i{flex:1;height:8px;border-radius:4px;background:var(--ton)}.prog i.on{background:var(--pri)}
+.two{display:flex;gap:10px}.two .btn{flex:1;min-height:56px;font-size:17px}
+.btn.ok{background:var(--ok);color:#fff}[data-theme=dark] .btn.ok{color:#0f1420}
+.ask{font-size:30px;font-weight:800;line-height:1.2;margin:6px 0 4px}
+.hidden{margin:14px 0 4px;padding:22px 16px;border-radius:20px;border:2px dashed color-mix(in srgb,var(--mut) 45%,transparent);text-align:center;color:var(--mut);font-size:16px}
+.note{margin-top:12px;padding:10px 14px;border-radius:16px;background:var(--ton);font-size:15px}
+.note.good{background:color-mix(in srgb,var(--ok) 22%,var(--card))}
+.badge{display:inline-flex;align-items:center;gap:6px;background:var(--ton);color:var(--pri);border-radius:12px;padding:3px 10px;font-size:13px;font-weight:800;letter-spacing:.4px;text-transform:uppercase}
+.da-small{color:var(--mut);font-size:16px;margin-bottom:4px}
+</style><div class="wrap"><div class="col"><div class="cap">1. Husker du?<small>Kun dansk. Prøv selv – i hovedet eller højt</small></div>
+<div class="phone"><main class="page">
+ <header class="top"><h1 class="grow">Fala</h1><span class="muted small">12 dage til Lissabon</span></header>
+ <div class="prog"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div><article class="card answer"><div class="kicker">Husker du? · 6 af 8</div>
+  <div class="ask">En espresso, tak.</div>
+  <div class="muted">Sig det på portugisisk.</div>
+  <div class="hidden">Portugisisk skjult</div>
+  <div class="actions"><span class="btn tonal"><i data-i="mic"></i> Sig det</span></div>
+ </article>
+ <div class="two"><span class="btn filled"><i data-i="eye"></i> Vis svar</span></div>
+</main><nav class="tabbar"><a class="on"><span class="pill"><i data-i="sun"></i></span>I dag</a><a><span class="pill"><i data-i="book"></i></span>Parlør</a><a><span class="pill"><i data-i="chat"></i></span>Sig det</a></nav></div></div><div class="col"><div class="cap">2. Svaret<small>Så ser og hører du det – og siger ærligt, om du kunne</small></div>
+<div class="phone"><main class="page">
+ <header class="top"><h1 class="grow">Fala</h1><span class="muted small">12 dage til Lissabon</span></header>
+ <div class="prog"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div><article class="card answer"><div class="kicker">Husker du? · 6 af 8</div>
+  <div class="da-small">En espresso, tak.</div>
+  <div class="big-pt">Uma bica, por favor.</div>
+  <div class="lyd">U-ma BI-ka, pur fa-VOR</div>
+  <div class="actions"><span class="btn filled"><i data-i="speaker"></i> Hør</span><span class="btn tonal"><i data-i="slow"></i> Langsomt</span></div>
+  <div class="note good">Godt sagt! Du sagde: "uma bica por favor"</div>
+ </article>
+ <div class="two"><span class="btn tonal"><i data-i="again"></i> Igen</span><span class="btn ok"><i data-i="check"></i> Kunne den</span></div>
+</main><nav class="tabbar"><a class="on"><span class="pill"><i data-i="sun"></i></span>I dag</a><a><span class="pill"><i data-i="book"></i></span>Parlør</a><a><span class="pill"><i data-i="chat"></i></span>Sig det</a></nav></div></div></div>
+<script>
+const P={mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',eye:'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',again:'<path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v5h-5"/>',slow:'<circle cx="12" cy="13" r="7"/><path d="M12 13V9M10 3h4"/>',gear:'<path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/>',speaker:'<path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/>',check:'<path d="M5 12l5 5L20 7"/>',sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/>',book:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5"/>',chat:'<path d="M4 5h16v11H9l-5 4z"/>',back:'<path d="M15 5l-7 7 7 7"/>',days:'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/>',search:'<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/>',plus:'<path d="M12 5v14M5 12h14"/>'};
+document.querySelectorAll('i[data-i]').forEach(e=>{e.outerHTML='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+P[e.dataset.i]+'</svg>'});
+if(location.hash==='#dark')document.documentElement.dataset.theme='dark';
+</script></body></html>
