@@ -212,3 +212,7 @@ button { -webkit-tap-highlight-color: transparent; }
 .voice b { display: block; overflow-wrap: anywhere; }
 .voice .grow > span { display: block; color: var(--mut); font-size: 14px; }
 .ring.small { width: 36px; height: 36px; border-radius: 18px; background: var(--ok); color: var(--ok-on); }
+
+.ask { font-size: 30px; font-weight: 800; line-height: 1.2; margin: 4px 0; overflow-wrap: anywhere; }
+.da-small { color: var(--mut); font-size: 16px; margin-top: 2px; }
+.hidden-pt { margin: 14px 0 4px; padding: 22px 16px; border-radius: 20px; border: 2px dashed color-mix(in srgb, var(--mut) 45%, transparent); text-align: center; color: var(--mut); font-size: 16px; }

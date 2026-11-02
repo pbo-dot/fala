@@ -5,13 +5,54 @@ import { buildSession, findItem, grade } from '../srs'
 import { daysUntil, getData, today, useData } from '../store'
 import { Header, PhraseRow } from '../ui'
 
-// Dagens øvelse huskes, mens appen er åben, så man kan skifte fane uden at miste stedet.
-let session: { date: string; queue: string[]; total: number; done: number } | null = null
+// Dagens øvelse: først "lær" (alt synligt), så "husker du?" med de samme sætninger (kun dansk).
+// Gemmes på telefonen, så man kan lukke appen midt i og fortsætte.
+type Session = {
+  date: string
+  phase: 'learn' | 'test' | 'done'
+  queue: string[]
+  total: number
+  done: number
+  learned: string[]
+  missed: string[]
+  tested: number
+}
+
+const SKEY = 'fala-session'
+let session: Session | null = null
+
+function save() {
+  try {
+    localStorage.setItem(SKEY, JSON.stringify(session))
+  } catch {
+    /* ignorer */
+  }
+}
+
+function loadSession(): Session | null {
+  try {
+    const raw = localStorage.getItem(SKEY)
+    const x = raw ? (JSON.parse(raw) as Session) : null
+    return x && x.date === today() && Array.isArray(x.queue) && x.phase ? x : null
+  } catch {
+    return null
+  }
+}
 
 function newSession() {
   const d = getData()
   const queue = buildSession(d, d.settings.perDay)
-  session = { date: today(), queue, total: queue.length, done: 0 }
+  session = { date: today(), phase: queue.length ? 'learn' : 'done', queue, total: queue.length, done: 0, learned: [], missed: [], tested: 0 }
+  save()
+}
+
+function shuffle<T>(a: T[]): T[] {
+  const b = [...a]
+  for (let i = b.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[b[i], b[j]] = [b[j], b[i]]
+  }
+  return b
 }
 
 function countdown(date: string, place: string): string | null {
@@ -26,21 +67,29 @@ function countdown(date: string, place: string): string | null {
 export function Today() {
   const d = useData()
   if (!session || session.date !== today()) {
-    if ((d.days[today()] ?? 0) >= d.settings.perDay) session = { date: today(), queue: [], total: 0, done: 0 }
-    else newSession()
+    session = loadSession()
+    if (!session) {
+      if ((d.days[today()] ?? 0) >= d.settings.perDay) {
+        session = { date: today(), phase: 'done', queue: [], total: 0, done: 0, learned: [], missed: [], tested: 0 }
+        save()
+      } else newSession()
+    }
   }
   const [, force] = useState(0)
   const [verdict, setVerdict] = useState<Verdict | 'listening' | 'error' | null>(null)
+  const [shown, setShown] = useState(false)
   const stopRef = useRef<() => void>(() => {})
 
   const s = session!
   const id = s.queue[0]
   const item = id ? findItem(d, id) : undefined
+  const testing = s.phase === 'test'
 
   useEffect(() => () => stopRef.current(), [])
   useEffect(() => {
     setVerdict(null)
-  }, [id])
+    setShown(false)
+  }, [id, s.phase])
 
   const cd = countdown(d.settings.tripDate, d.settings.tripPlace)
   const header = (
@@ -77,6 +126,11 @@ export function Today() {
             <span className="muted">
               {practiced > 0 ? `${practiced} ${practiced === 1 ? 'sætning' : 'sætninger'} i dag` : 'Ikke mere at øve lige nu'}
             </span>
+            {s.tested > 0 && (
+              <span className="muted" style={{ display: 'block' }}>
+                Husket første gang: {s.tested - s.missed.length} af {s.tested}
+              </span>
+            )}
           </div>
         </article>
         {learned.length > 0 && (
@@ -108,20 +162,46 @@ export function Today() {
   const pos = s.done + 1
   const total = Math.max(s.total, pos)
 
+  const next = () => {
+    if (s.queue.length === 0) {
+      if (s.phase === 'learn' && s.learned.length > 0) {
+        s.phase = 'test'
+        s.queue = shuffle(s.learned)
+        s.total = s.queue.length
+        s.tested = s.queue.length
+        s.done = 0
+        s.missed = []
+      } else s.phase = 'done'
+    }
+    save()
+    setVerdict(null)
+    setShown(false)
+    force((x) => x + 1)
+    window.scrollTo(0, 0)
+  }
+
   const rate = (ok: boolean) => {
     stopRef.current()
-    grade(item.id, ok)
     const [first, ...rest] = s.queue
+    if (testing) {
+      // "Husker du?": glemt → FSRS får besked (én gang), og sætningen kommer igen om lidt.
+      if (!ok && !s.missed.includes(item.id)) {
+        s.missed.push(item.id)
+        grade(item.id, false)
+      }
+    } else {
+      grade(item.id, ok)
+      if (ok && !s.learned.includes(item.id)) s.learned.push(item.id)
+    }
     if (ok) {
       s.queue = rest
       s.done++
     } else {
-      // "Igen": kortet kommer igen senere i dag, efter et par andre.
+      // "Igen": kortet kommer igen senere, efter et par andre.
       rest.splice(Math.min(2, rest.length), 0, first)
       s.queue = rest
     }
-    setVerdict(null)
-    force((x) => x + 1)
+    next()
   }
 
   const sayIt = () => {
@@ -137,6 +217,7 @@ export function Today() {
         return
       }
       setVerdict(judge(item.pt, heard))
+      setShown(true)
     })
   }
 
@@ -148,29 +229,45 @@ export function Today() {
           <i key={i} className={i < s.done ? 'on' : ''} />
         ))}
       </div>
-      <article className="card answer" key={item.id}>
+      <article className="card answer" key={`${s.phase}-${item.id}`}>
         <div className="kicker">
-          {item.cat} · {pos} af {total}
+          {testing ? 'Husker du?' : item.cat} · {pos} af {total}
         </div>
-        <div className="big-pt" lang="pt-PT">
-          {item.pt}
-        </div>
-        <div className="lyd">{item.say}</div>
-        <div className="da">{item.da}</div>
+        {testing && !shown ? (
+          <>
+            <div className="ask">{item.da}</div>
+            <div className="muted">Sig det på portugisisk.</div>
+            {s.done === 0 && s.missed.length === 0 && <div className="note">Nu de samme sætninger igen, kun på dansk. Kan du huske dem?</div>}
+            <div className="hidden-pt">Portugisisk skjult</div>
+          </>
+        ) : (
+          <>
+            {testing && <div className="da-small">{item.da}</div>}
+            <div className="big-pt" lang="pt-PT">
+              {item.pt}
+            </div>
+            <div className="lyd">{item.say}</div>
+            {!testing && <div className="da">{item.da}</div>}
+          </>
+        )}
         <div className="actions">
-          <button className="btn filled" onClick={() => speak(item.pt)}>
-            <Icon n="speaker" /> Hør
-          </button>
-          <button className="btn tonal" onClick={() => speak(item.pt, true)}>
-            <Icon n="slow" /> Langsomt
-          </button>
-          {canListen() && (
+          {(!testing || shown) && (
+            <>
+              <button className="btn filled" onClick={() => speak(item.pt)}>
+                <Icon n="speaker" /> Hør
+              </button>
+              <button className="btn tonal" onClick={() => speak(item.pt, true)}>
+                <Icon n="slow" /> Langsomt
+              </button>
+            </>
+          )}
+          {canListen() && (!testing || !shown) && (
             <button className={`btn ${verdict === 'listening' ? 'live' : 'tonal'}`} onClick={sayIt}>
               <Icon n={verdict === 'listening' ? 'stop' : 'mic'} /> {verdict === 'listening' ? 'Lytter …' : 'Sig det'}
             </button>
           )}
         </div>
-        {item.note && verdict === null && <div className="note">{item.note}</div>}
+        {item.note && verdict === null && (!testing || shown) && <div className="note">{item.note}</div>}
         {verdict && verdict !== 'listening' && (
           <div className={`note ${verdict !== 'error' && verdict.level === 'good' ? 'good' : ''}`} role="status">
             {verdict === 'error'
@@ -179,18 +276,33 @@ export function Today() {
                 ? `Godt sagt! Du sagde: "${verdict.heard}"`
                 : verdict.level === 'close'
                   ? `Næsten! Du sagde: "${verdict.heard}"`
-                  : `Prøv igen. Jeg hørte: "${verdict.heard}"`}
+                  : `Ikke helt. Jeg hørte: "${verdict.heard}"`}
           </div>
         )}
       </article>
-      <div className="two">
-        <button className="btn tonal" onClick={() => rate(false)}>
-          <Icon n="again" /> Igen
-        </button>
-        <button className="btn ok" onClick={() => rate(true)}>
-          <Icon n="check" /> Kunne den
-        </button>
-      </div>
+      {testing && !shown ? (
+        <div className="two">
+          <button
+            className="btn filled"
+            onClick={() => {
+              stopRef.current()
+              setShown(true)
+              speak(item.pt)
+            }}
+          >
+            <Icon n="eye" /> Vis svar
+          </button>
+        </div>
+      ) : (
+        <div className="two">
+          <button className="btn tonal" onClick={() => rate(false)}>
+            <Icon n="again" /> Igen
+          </button>
+          <button className="btn ok" onClick={() => rate(true)}>
+            <Icon n="check" /> Kunne den
+          </button>
+        </div>
+      )}
     </main>
   )
 }
